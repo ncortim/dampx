@@ -1,0 +1,59 @@
+version: '3'
+services: 
+    webserver:
+        build:
+            # it is important to place Dockerfile within its own directory
+            # otherwise image has be be built first i.e docker-compose up -d --build 
+            context: ./apache-php
+        image: apache_php_xdebug:v0.1
+        restart: always
+        ports: 
+            - 80:80
+            - 443:443
+        volumes:
+            #path to your webroot, this is your website directory 
+            #by default in containers using this php-apache image, the webroot 
+            #directory is /var/www.
+            #DO NOT forget to update your webroot path in the Dockerfile
+            - /path/to/mywebsite_local:/path/to/mywebsite_container
+        networks: 
+            - backend
+            
+    database:
+        image: mysql:8
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            #if a database is available and needs to be uploaded into the container,            
+            #specify the next 3 lines: database name, user, and user password
+            # MYSQL_DATABASE: myDb
+            # MYSQL_USER: user
+            # MYSQL_PASSWORD: user
+        volumes:
+            - persistent_db:/var/lib/mysql
+            # if a database is available, comment out the following 2 lines and update the paths
+            # - ./database/dump:/docker-entrypoint-initdb.d
+            # - ./database/conf:/etc/mysql/conf.d
+        ports:
+            - "3306:3306"
+        networks: 
+            - backend
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:5.0
+        environment:
+            PMA_HOST: database
+        restart: always
+        ports: 
+            - 81:80
+        depends_on: 
+            - database
+            - webserver
+        networks: 
+            - backend
+
+networks: 
+    backend:
+volumes: 
+    persistent_db:
