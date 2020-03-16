@@ -12,5 +12,5 @@ RUN apt-get update \
 && docker-php-ext-install mysqli \
 && pecl install xdebug-2.9.2 \
 && docker-php-ext-enable xdebug \
-&& printf '[xdebug]\nzend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_autostart=1\nxdebug.remote_connect_back=1\nxdebug.remote_port=9000\nxdebug.remote_host=192.168.178.34\n' >> /usr/local/etc/php/php.ini
-
+&& printf '[xdebug]\nzend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/xdebug.so\nxdebug.remote_enable=1\nxdebug.remote_autostart=1\nxdebug.remote_connect_back=1\nxdebug.remote_port=9000\nxdebug.remote_host=192.168.178.34\n' >> /usr/local/etc/php/php.ini \
+&& a2enmod rewrite
