@@ -44,6 +44,7 @@ services:
         image: phpmyadmin/phpmyadmin:5.0
         environment:
             PMA_HOST: database
+            MYSQL_ROOT_PASSWORD: root
         restart: always
         ports: 
             - 81:80
