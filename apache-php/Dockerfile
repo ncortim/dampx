@@ -1,4 +1,4 @@
-FROM php:8.1.0-apache
+FROM php:8.3.8-apache
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
